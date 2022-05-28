@@ -1,39 +1,67 @@
-import { useRef, useState } from "react";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+import React, { useRef, useState, useEffect } from "react";
+import { useReactMediaRecorder } from "react-media-recorder";
 import "./App.css";
 import microPhoneIcon from "./img/microphone.svg";
 
 function App() {
-  const { transcript, resetTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return (
-      <div className="mircophone-container">
-        Browser is not Support Speech Recognition.
-      </div>
-    );
-  }
+  useEffect(() => {
+    const sendAudioFile = async () => {
+      const audioFile = new File([mediaBlobUrl], "voice.wav", {
+        type: "audio/wav",
+      });
+      const formData = new FormData();
+      formData.append("audio-file", audioFile);
+      return fetch("http://localhost:3000/audioUpload", {
+        method: "POST",
+        body: formData,
+      });
+    };
+    sendAudioFile();
+  }, []);
+  const {
+    // status,
+    startRecording,
+    stopRecording,
+    // pauseRecording,
+    mediaBlobUrl,
+  } = useReactMediaRecorder({
+    video: false,
+    audio: true,
+    // echoCancellation: true,
+  });
+
   const handleListing = () => {
     setIsListening(true);
     microphoneRef.current.classList.add("listening");
-    SpeechRecognition.startListening({
-      continuous: true,
-    });
+    startRecording();
   };
   const stopHandle = () => {
     setIsListening(false);
     microphoneRef.current.classList.remove("listening");
-    SpeechRecognition.stopListening();
+    stopRecording();
   };
-  const handleReset = () => {
-    stopHandle();
-    resetTranscript();
+  const handleTransfer = () => {
+    fetch("http://localhost:3000/audioUpload", {
+      method: "GET",
+    })
+      .then((res) => res.json()) /*把request json化*/
+      .then((data) => {
+        /*接到request data後要做的事情*/
+        return data;
+      })
+      .catch((e) => {
+        /*發生錯誤時要做的事情*/
+      });
   };
+
+  console.log("deed", mediaBlobUrl);
   return (
     <div className="microphone-wrapper">
+      <div className="mircophone-title">
+        Welcome to the world of voice changing!
+      </div>
       <div className="mircophone-container">
         <div
           className="microphone-icon-container"
@@ -50,16 +78,26 @@ function App() {
           {isListening ? "Listening........." : "Click to start Listening"}
         </div>
         {isListening && (
-          <button className="microphone-stop btn" onClick={stopHandle}>
+          <button
+            className="microphone-stop btn"
+            onClick={() => {
+              stopHandle();
+            }}
+          >
             Stop
           </button>
         )}
       </div>
-      {transcript && (
+      {mediaBlobUrl && (
         <div className="microphone-result-container">
-          <div className="microphone-result-text">{transcript}</div>
-          <button className="microphone-reset btn" onClick={handleReset}>
-            Reset
+          <video
+            className="microphone-result-audio"
+            src={mediaBlobUrl}
+            controls
+            loop
+          />
+          <button className="microphone-transfer btn" onClick={handleTransfer}>
+            start to transfer
           </button>
         </div>
       )}
