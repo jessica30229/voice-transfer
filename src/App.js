@@ -49,6 +49,7 @@ function App() {
       .then((res) => res.json()) /*把request json化*/
       .then((data) => {
         /*接到request data後要做的事情*/
+        
         return data;
       })
       .catch((e) => {
