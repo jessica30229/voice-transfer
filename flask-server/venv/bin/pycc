@@ -1,0 +1,3 @@
+#!/Users/jessica/Desktop/voice-transfer/flask-server/venv/bin/python3
+from numba.pycc import main
+main()
