@@ -46,11 +46,15 @@ function App() {
     fetch("http://localhost:3000/audioUpload", {
       method: "GET",
     })
-      .then((res) => res.json()) /*把request json化*/
+      .then((res) => { return res.blob(); })
       .then((data) => {
-        /*接到request data後要做的事情*/
-        
-        return data;
+        var a = document.createElement("a");
+        a.href = window.URL.createObjectURL(data);
+        let pythonBridge = require('python-bridge');
+        let python = pythonBridge(); 
+        python.ex `from convert_realtime import web_voice_convert`;
+        python `web_voice_convert(${a.href}, "./converted")`;
+        python.end();
       })
       .catch((e) => {
         /*發生錯誤時要做的事情*/
