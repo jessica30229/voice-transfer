@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: pyworld
+Version: 0.3.0
+Summary: PyWorld is a Python wrapper for WORLD vocoder.
+Home-page: https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder
+Author: Pyworld Contributors
+Author-email: jeremycchsu@gmail.com
+Keywords: vocoder
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: cython (>=0.24.0)
+Provides-Extra: sdist
+Requires-Dist: numpy ; extra == 'sdist'
+Requires-Dist: cython ; extra == 'sdist'
+Provides-Extra: test
+Requires-Dist: nose ; extra == 'test'
+
+PyWorld wrappers WORLD, which is a free software for high-quality speech
+analysis, manipulation and synthesis. It can estimate fundamental frequency (F0),
+aperiodicity and spectral envelope and also generate the speech like input speech
+with only estimated parameters.
