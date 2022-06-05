@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useReactMediaRecorder } from "react-media-recorder";
 import "./App.css";
 import microPhoneIcon from "./img/microphone.svg";
+import output_audio from "./converted_audio/output.wav";
 
 function App() {
   const [isListening, setIsListening] = useState(false);
@@ -13,10 +14,10 @@ function App() {
       });
       const formData = new FormData();
       formData.append("audio-file", audioFile);
-      return fetch("audioUpload", {
+      /*return fetch("/audioUpload", {
         method: "POST",
         body: formData,
-      });
+      });*/
     };
     sendAudioFile();
   }, []);
@@ -43,9 +44,7 @@ function App() {
     stopRecording();
   };
   const handleTransfer = () => {
-    fetch("audioUpload", {
-      method: "GET",
-    })
+    fetch(`/audioUpload/${mediaBlobUrl}`)
       .then((res) => {
         return res.blob();
       })
@@ -95,6 +94,12 @@ function App() {
           <video
             className="microphone-result-audio"
             src={mediaBlobUrl}
+            controls
+            loop
+          />
+          <audio
+            className="microphone-result-audio"
+            src={output_audio}
             controls
             loop
           />
