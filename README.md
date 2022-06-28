@@ -1,70 +1,7 @@
-# Getting Started with Create React App
+Singing voice synthesis is a very popular topic. However, the synthesis result’s quality is hard to predict. Some unpleasant voice timbre may occur at some unexpected places of the singing. Therefore, manually editing the timbre of singing voice is an essential task.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+We propose a method to convert singing voice with the StarGAN-VC[6], which is a voice conversion model dealing with speaking voice originally. Furthermore, we build a new dataset emphasizing on "chest voice and falsetto" of Mandarin popular music. The total length of  our data is about 30 minutes. We use World Vocoder[8] as the acoustic model to extract features (aperiodicity parameter, spectral envelope and F0) which  comprise the audio. Those features will be converted by the trained StarGAN model and reconstructed by the acoustic model.
 
-## Available Scripts
+The converted audio can successfully fool people’s ears. However, if a real chest voice/falsetto audio is provided, people still can tell the differences between the converted one and the real singing voice. Besides, we also discovered that the F0 shifting using World will also affect the voice timbre. Thus, each feature extraction method of World Vocoder is explained in detail. Many observations and ideas between voice timbre, human sense of hearing and acoustic features are also discussed in this report. 
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Last, we try to build a website to deploy our model. We use React as frontend and Flask as backend. Our final goal is to let people recording their singing on the website, and they can also edit their voice on this website using our voice conversion model. Finally, people can download the audio file on this website.
